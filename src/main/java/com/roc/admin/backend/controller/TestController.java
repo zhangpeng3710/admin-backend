@@ -1,12 +1,12 @@
 package com.roc.admin.backend.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import com.roc.admin.backend.constant.ResponseData;
+import com.roc.admin.backend.dao.entity.RbacUser;
+import com.roc.admin.backend.dao.service.IRbacUserService;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
@@ -17,6 +17,9 @@ import java.util.Map;
 public class TestController {
     @Resource
     private ObjectMapper mapper;
+
+    @Resource
+    private IRbacUserService userService;
 
     @GetMapping("/t1")
     public String test(@RequestBody String hh) throws JsonProcessingException {
@@ -45,8 +48,12 @@ public class TestController {
     }
 
     @GetMapping(value = "/user")
-    public String getUserList() {
+    public ResponseData<RbacUser> getUserList() {
 
-        return "user";
+        LambdaQueryWrapper<RbacUser> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(RbacUser::getUserEmail, "app1_admin@126.com");
+        RbacUser userFromDb = userService.getOne(queryWrapper, true);
+
+        return ResponseData.success(userFromDb);
     }
 }
