@@ -26,7 +26,7 @@ spring:
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/tomin?useUnicode=true&characterEncoding=utf-8
+    url: jdbc:mysql://8.130.28.161:3106/camunda?useUnicode=true&characterEncoding=utf-8
     username: tomin
     password: F-p6AE!om
 #  datasource:
@@ -53,3 +53,6 @@ springdoc:
 cxf:
   path: /services
 
+crypt:
+  key:
+    SM4: jkl;POIU1234++==

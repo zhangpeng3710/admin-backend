@@ -1,13 +1,9 @@
 package com.roc.admin.backend.aop.mybatis;
 
-import com.roc.admin.backend.utils.crypt.ICryptUtil;
+import com.roc.admin.backend.aop.mybatis.annotation.SensitiveData;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.executor.parameter.ParameterHandler;
-import org.apache.ibatis.plugin.Interceptor;
-import org.apache.ibatis.plugin.Intercepts;
-import org.apache.ibatis.plugin.Invocation;
-import org.apache.ibatis.plugin.Plugin;
-import org.apache.ibatis.plugin.Signature;
+import org.apache.ibatis.plugin.*;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.stereotype.Component;
 
@@ -34,7 +30,7 @@ import java.util.Properties;
 public class EncryptInterceptor implements Interceptor {
 
     @Resource
-    private ICryptUtil encryptUtil;
+    private CryptUtil encryptUtil;
 
 
     @Override
