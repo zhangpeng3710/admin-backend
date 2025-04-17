@@ -4,6 +4,14 @@ server:
 spring:
   quartz:
     job-store-type: jdbc
+    # Quartz 是否自动启动
+    auto-startup: true
+    # 延迟 N 秒启动
+    startup-delay: 10
+    # 应用关闭时，是否等待定时任务执行完成。默认为 false ，建议设置为 true
+    wait-for-jobs-to-complete-on-shutdown: true
+    # 是否覆盖已有 Job 的配置
+    overwrite-existing-jobs: false
     jdbc:
       #first set "always" to init schema, then set "never",
       #otherwise the later running instances will overwrite previous instances.
@@ -13,11 +21,13 @@ spring:
       org:
         quartz:
           scheduler:
-            instanceName: clusteredScheduler
+            instanceName: tomin
             instanceId: AUTO
           jobStore:
             isClustered: true
             misfireThreshold: 120000
+            clusterCheckinInterval: 15000
+            tablePrefix: QRTZ_
           threadPool:
             class: org.quartz.simpl.SimpleThreadPool
             threadCount: 10
@@ -26,7 +36,7 @@ spring:
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://8.130.28.161:3106/camunda?useUnicode=true&characterEncoding=utf-8
+    url: jdbc:mysql://8.141.103.170:3106/tomin?useUnicode=true&characterEncoding=utf-8
     username: tomin
     password: F-p6AE!om
 #  datasource:
@@ -55,4 +65,4 @@ cxf:
 
 crypt:
   key:
-    SM4: jkl;POIU1234++==
+    sm4: jkl;POIU1234++==
