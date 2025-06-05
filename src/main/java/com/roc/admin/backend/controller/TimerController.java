@@ -1,5 +1,6 @@
 package com.roc.admin.backend.controller;
 
+import com.roc.admin.backend.constant.ResponseData;
 import com.roc.admin.backend.timer.quartz.ClusterScheduler;
 import org.quartz.SchedulerException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,9 +21,9 @@ public class TimerController {
     private ClusterScheduler scheduler;
 
     @PostMapping("/quartz/cluster")
-    public String quartzCluster() throws SchedulerException, InterruptedException {
-        scheduler.run(true);
-        return "quartzCluster running";
+    public ResponseData<Object> quartzCluster() throws SchedulerException, InterruptedException {
+        scheduler.run();
+        return ResponseData.success();
     }
 
 }

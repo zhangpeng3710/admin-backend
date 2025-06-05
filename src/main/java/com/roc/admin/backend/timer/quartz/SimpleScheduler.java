@@ -20,10 +20,6 @@ import java.util.Date;
 @Slf4j
 public class SimpleScheduler {
 
-    public static void main(String[] args) throws SchedulerException, InterruptedException {
-        SimpleScheduler simpleScheduler = new SimpleScheduler();
-        simpleScheduler.run();
-    }
 
     public void run() throws SchedulerException, InterruptedException {
         JobDetail job = JobBuilder.newJob(DemoJob.class)

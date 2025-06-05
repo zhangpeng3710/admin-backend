@@ -2,9 +2,8 @@ package com.roc.admin.backend.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.roc.admin.backend.constant.ResponseData;
-import com.roc.admin.backend.dao.entity.RbacUser;
-import com.roc.admin.backend.dao.mapper.RbacUserMapper;
-import com.roc.admin.backend.dao.service.IRbacUserService;
+import com.roc.admin.backend.mapper.RbacUserMapper;
+import com.roc.admin.backend.model.entity.RbacUser;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,9 +27,6 @@ public class UserController {
     @Resource
     private RbacUserMapper userMapper;
 
-    @Resource
-    private IRbacUserService userService;
-
     @GetMapping(value = "/user")
     public String getUserList() {
         return "user";
@@ -48,7 +44,7 @@ public class UserController {
     public ResponseData<RbacUser> queryUser(@RequestBody RbacUser user) {
         LambdaQueryWrapper<RbacUser> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(RbacUser::getUserEmail, user.getUserEmail());
-        RbacUser userFromDb = userService.getOne(queryWrapper, true);
+        RbacUser userFromDb = userMapper.selectOne(queryWrapper, true);
         return ResponseData.success(userFromDb);
     }
 }

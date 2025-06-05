@@ -1,7 +1,13 @@
 package com.roc.admin.backend.timer.quartz;
 
 import lombok.extern.slf4j.Slf4j;
-import org.quartz.*;
+import org.quartz.CronScheduleBuilder;
+import org.quartz.CronTrigger;
+import org.quartz.JobBuilder;
+import org.quartz.JobDetail;
+import org.quartz.Scheduler;
+import org.quartz.SchedulerException;
+import org.quartz.TriggerBuilder;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -21,10 +27,8 @@ public class ClusterScheduler {
 
     /**
      * 创建任务调度或者集群执行任务调度
-     *
-     * @param bSchedulerNewJob True 创建任务调度，False 集群执行任务调度
      */
-    public void run(Boolean bSchedulerNewJob) throws SchedulerException, InterruptedException {
+    public void run() throws SchedulerException, InterruptedException {
         cleanScheduler();
         addOneJobOneTrigger();
 //        addOneJobTwoTrigger();
@@ -37,6 +41,7 @@ public class ClusterScheduler {
     }
 
     public void addOneJobOneTrigger() throws SchedulerException {
+        log.info("add one job triggered by one trigger");
         JobDetail job = JobBuilder.newJob(DemoJob.class)
                 .withIdentity("MyJob", "OneJob-OneTrigger")
                 .requestRecovery()
@@ -49,11 +54,11 @@ public class ClusterScheduler {
                 .build();
 
         scheduler.scheduleJob(job, trigger1);
-
     }
 
 
     public void addOneJobTwoTrigger() throws SchedulerException {
+        log.info("add one job triggered by two trigger");
         JobDetail job = JobBuilder.newJob(DemoJob.class)
                 .withIdentity("MyJob", "OneJob-TwoTrigger")
                 .requestRecovery()
@@ -73,7 +78,6 @@ public class ClusterScheduler {
         HashSet<CronTrigger> triggerHash = new HashSet<>();
         triggerHash.add(trigger1);
         triggerHash.add(trigger2);
-        scheduler.scheduleJob(job, triggerHash, true);
-
+        scheduler.scheduleJob(job, triggerHash, false);
     }
 }
